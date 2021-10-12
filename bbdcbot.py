@@ -112,6 +112,7 @@ def bbdc_bot():
             currenttime = now.strftime("%d/%m/%y %H:%M")
             print("Last check:", currenttime)
             driver.quit()
+            time.sleep(600)
     except Exception as e:
         print(e)
         print("Error when finding available slot")
@@ -120,4 +121,3 @@ def bbdc_bot():
 booked = 0
 while booked == 0:
     bbdc_bot()
-    time.sleep(600)
