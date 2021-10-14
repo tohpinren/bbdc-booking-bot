@@ -1,4 +1,5 @@
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -12,7 +13,11 @@ username = input("Username: ")
 password = input("Password: ")
 
 def bbdc_bot():
-    driver = webdriver.Chrome(PATH)
+    # chrome running headless (ie google chrome will not pop up)
+    chrome_options = Options()
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--disable-gpu")
+    driver = webdriver.Chrome(PATH, options=chrome_options)
     driver.get("https://info.bbdc.sg/members-login/")
     # Login page
     try:
@@ -25,19 +30,10 @@ def bbdc_bot():
         login = WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.ID, "loginbtn")))
         login.click()
-    except Exception as e:
-        print(e)
-        print("Error at login")
-        driver.quit()
-    # Information not secure page
-    try:
-        proceed = WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located((By.ID, "proceed-button")))
-        proceed.click()
         print("Login successful")
     except Exception as e:
         print(e)
-        print("Error at secure page")
+        print("Error at login")
         driver.quit()
     # Home page
     try:
@@ -118,6 +114,7 @@ def bbdc_bot():
         print("Error when finding available slot")
         driver.quit()
 
+global booked
 booked = 0
 while booked == 0:
     bbdc_bot()
